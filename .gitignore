@@ -1,0 +1,9 @@
+# no-brainer
+node_modules/
+
+# embarrasment
+test.js
+demo.js
+
+# demo music files
+*.mp3
