@@ -1,6 +1,9 @@
 {
   "name": "terminal-synced-lyrics",
   "version": "1.0.0",
+  "bin": {
+    "lyrics": "./index.js"
+  },
   "description": "Synced lryics displayer on the terminal",
   "license": "ISC",
   "author": "Krishna",
@@ -14,7 +17,6 @@
     "chalk": "^6.0.1",
     "commander": "^15.0.0",
     "log-update": "^8.0.0",
-    "lrc-file-parser": "^2.4.2",
     "play-sound": "^1.1.6"
   }
 }

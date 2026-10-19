@@ -1,20 +1,37 @@
+#!/usr/bin/env node
+
+// ^ Command the OS to hand the execution of this progarm/file to node
+
 import { performance } from "perf_hooks";
 import logUpdate from "log-update";
 import chalk from "chalk";
+import { program } from "commander";
 
-main();
+//lyris is a global command - using bin in package.json
+program
+  .name("lyrics")
+  .description("A terminal-based synchronized lyrics engine.")
+  .version("1.0.0");
+// command syntax looks like: lyrics play "song-name" "artist-name"
+program
+  .command("play <song> <artist>") // <song> and <artist>  are required arguments
+  .description("Play a song and display synchronized lyrics")
+  .action((song, artist) => {
+    main(artist, song); // call the main function as the user enters the correct command
+  });
 
-async function main() {
+program.parse(process.argv);
 
+async function main(artist, song) {
   // Change the parameters here: (artistName, songName)
-  const lyrics = await fetchLyrics("Bruno Mars", "That's What I Like");
-  if(!lyrics) {
-    throw new Error("Error during fetching lyrics from Lrclib")
+  const lyrics = await fetchLyrics(artist, song);
+  if (!lyrics) {
+    throw new Error("Error during fetching lyrics from Lrclib");
   }
 
   const parsedLyrics = parseLRC(lyrics);
-  if(!parsedLyrics) {
-    throw new Error("Error parsing the lryics")
+  if (!parsedLyrics) {
+    throw new Error("Error parsing the lryics");
   }
 
   const startTime = performance.now();
@@ -49,7 +66,6 @@ async function main() {
       currentLyricIndex++; // Move to the next line
     }
   }, 16);
-
 }
 
 // fetch the lyrics - REST /api/get request on lrclib.net
@@ -73,11 +89,10 @@ async function fetchLyrics(artist, song) {
   return data.syncedLyrics;
 }
 
-// Parse the returned lyrics 
+// Parse the returned lyrics
 function parseLRC(lrcString) {
-
-  if(!lrcString) {
-    return null
+  if (!lrcString) {
+    return null;
   }
 
   const lines = lrcString.trim().split("\n");
