@@ -1,5 +1,6 @@
 # no-brainer
 node_modules/
+.env
 
 # embarrasment
 test.js

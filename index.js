@@ -2,6 +2,8 @@
 
 // ^ Command the OS to hand the execution of this progarm/file to node
 
+import "dotenv/config";
+
 import { performance } from "perf_hooks";
 import logUpdate from "log-update";
 import chalk from "chalk";
