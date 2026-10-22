@@ -7,6 +7,7 @@ import ytSearch from "yt-search";
 const app = express()
 const port = Number(process.env.PORT) || 3000
 
+app.disable("x-powered-by");
 app.use(cors())
 app.use(express.json())
 
@@ -55,12 +56,14 @@ app.get("/api/search", async (req, res) => {
 
   const video = videos[0];
 
+  console.log(videos)
+
   const payload = {
     title: lrcData.trackName,
     artist: lrcData.artistName,
-    duration: lrcData.duration,
-    thumbnail: video.thumbnail,
-    url: video.url,
+    duration: targetDuration,
+    thumbnail: video?.thumbnail,
+    url: video?.url,
     lyrics: lrcData.syncedLyrics
   }
 
