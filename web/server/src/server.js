@@ -2,7 +2,7 @@ import 'dotenv/config'
 import cors from 'cors'
 import express from 'express'
 import ytSearch from "yt-search";
-
+import { parseLRC } from '../utils/app.util.js';
 
 const app = express()
 const port = Number(process.env.PORT) || 3000
@@ -23,12 +23,10 @@ app.get("/api/search", async (req, res) => {
   );
 
   if (lrcResponse.status >= 400 && lrcResponse.status < 600) {
-    return res
-      .status(404)
-      .json({
-        error: "Could not find lyrics for this track.",
-        statusCode: 404,
-      });
+    return res.status(404).json({
+      error: "Could not find lyrics for this track.",
+      statusCode: 404,
+    });
   }
 
   const lrcData = await lrcResponse.json();
@@ -40,6 +38,9 @@ app.get("/api/search", async (req, res) => {
   }
 
   const targetDuration = lrcData.duration; // this is in seconds
+
+  const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const artistNormalized = normalize(lrcData.artistName);
 
   const ytResults = await ytSearch(
     `${lrcData.trackName} ${lrcData.artistName}`,
@@ -54,9 +55,37 @@ app.get("/api/search", async (req, res) => {
     })
     .slice(0, 5);
 
-  const video = videos[0];
+  // Sort the candidates based on channel authenticity
+  const sortedVideos = videos.sort((a, b) => {
+    const authorANormalized = normalize(a.author.name);
+    const authorBNormalized = normalize(b.author.name);
 
-  console.log(videos)
+    const isAOfficial =
+      authorANormalized.includes(artistNormalized) ||
+      authorANormalized.includes("vevo") ||
+      authorANormalized.includes("topic");
+
+    const isBOfficial =
+      authorBNormalized.includes(artistNormalized) ||
+      authorBNormalized.includes("vevo") ||
+      authorBNormalized.includes("topic");
+
+    // If A is official and B is not, A moves up the list (-1)
+    if (isAOfficial && !isBOfficial) return -1;
+    // If B is official and A is not, B moves up the list (1)
+    if (!isAOfficial && isBOfficial) return 1;
+
+    // If both are official (or both unofficial), leave their order as-is (0)
+    return 0;
+  });
+
+  const video = sortedVideos[0];
+
+  const syncedLyrics = parseLRC(lrcData.syncedLyrics)
+
+  // console.log(ytResults)
+  // console.log(videos)
+  // console.log(sortedVideos)
 
   const payload = {
     title: lrcData.trackName,
@@ -64,10 +93,10 @@ app.get("/api/search", async (req, res) => {
     duration: targetDuration,
     thumbnail: video?.thumbnail,
     url: video?.url,
-    lyrics: lrcData.syncedLyrics
-  }
+    lyrics: syncedLyrics,
+  };
 
-  res.status(200).json(payload)
+  res.status(200).json(payload);
 })
 
 app.get("/api/test", (req, res) => {
