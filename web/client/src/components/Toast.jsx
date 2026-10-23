@@ -1,4 +1,4 @@
-function Toast({ message, isLoading, onDismiss }) {
+function Toast({ message, title = 'We couldn’t find that song', isLoading, onDismiss }) {
   if (!message) return null
 
   return (
@@ -10,7 +10,7 @@ function Toast({ message, isLoading, onDismiss }) {
           </svg>
         </span>
         <div className="min-w-0 flex-1">
-          <p className="font-work text-sm font-medium text-stone-900">We couldn’t find that song</p>
+          <p className="font-work text-sm font-medium text-stone-900">{title}</p>
           <p className="mt-1 font-work text-xs leading-5 text-stone-500">{message}</p>
         </div>
         <button
