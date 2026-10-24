@@ -20,3 +20,24 @@
 body { min-width: 320px; min-height: 100vh; margin: 0; }
 
 button, input { font: inherit; }
+
+@keyframes lyric-window-slide {
+  from {
+    opacity: 0.7;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lyric-window-slide {
+  animation: lyric-window-slide 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lyric-window-slide {
+    animation: none;
+  }
+}

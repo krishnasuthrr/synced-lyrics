@@ -70,10 +70,10 @@ function SongPage({ song, onBack }) {
         </span>
       </div>
 
-      <section className="flex w-full max-w-5xl flex-1 flex-col items-center justify-center pb-6 pt-16 sm:pb-14 sm:pt-20">
-        <div className="flex w-[80%] flex-col items-center justify-between gap-9 text-center md:flex-row md:gap-12 md:text-left">
-          <div className="min-w-0 flex-1">
-            <h1 className="font-display text-[clamp(2.8rem,4vw,5.5rem)] leading-none tracking-[-0.06em] text-stone-950">
+      <section className="flex w-full max-w-5xl flex-1 flex-col items-center justify-center pb-6 pt-16 sm:pb-14 sm:pt-20 lg:grid lg:max-w-7xl lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] lg:items-center lg:gap-x-14">
+        <div className="flex w-[80%] flex-col items-center justify-between gap-9 text-center md:flex-row md:gap-12 md:text-left lg:col-start-1 lg:row-start-1 lg:w-full lg:flex-col lg:gap-7 lg:text-center">
+          <div className="min-w-0 flex-1 lg:order-2 lg:w-full lg:flex-none">
+            <h1 className="font-display text-[clamp(2.8rem,2vw,5.5rem)] leading-none tracking-[-0.06em] text-stone-950">
               {song.title}
             </h1>
             <p className="mt-4 font-montserrat text-lg font-medium tracking-wide text-stone-600">
@@ -83,7 +83,7 @@ function SongPage({ song, onBack }) {
           {song.thumbnail && (
             <img
               alt={`${song.title} by ${song.artist} thumbnail`}
-              className="h-auto max-h-72 w-auto max-w-full rounded-2xl object-contain shadow-[0_16px_48px_rgba(40,35,24,0.12)] md:max-w-sm"
+              className="h-auto max-h-72 w-auto max-w-full rounded-2xl object-contain shadow-[0_16px_48px_rgba(40,35,24,0.12)] md:max-w-sm lg:order-1 lg:max-h-[min(42vh,22rem)] lg:max-w-full"
               decoding="async"
               loading="lazy"
               src={song.thumbnail}
@@ -91,7 +91,11 @@ function SongPage({ song, onBack }) {
           )}
         </div>
 
-        <LyricsWindow currentIndex={currentIndex} lyrics={lyrics} />
+        <LyricsWindow
+          className="lg:col-start-2 lg:row-start-1 lg:mx-0 lg:mt-0 lg:max-w-none"
+          currentIndex={currentIndex}
+          lyrics={lyrics}
+        />
       </section>
 
       {playbackError && (

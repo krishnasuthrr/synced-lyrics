@@ -1,7 +1,7 @@
-function LyricsWindow({ lyrics, currentIndex }) {
+function LyricsWindow({ lyrics, currentIndex, className = '' }) {
   if (lyrics.length === 0) {
     return (
-      <div className="relative mx-auto mt-16 grid min-h-60 w-full max-w-3xl place-items-center rounded-[2rem] border border-white/90 bg-white/55 px-5 py-10 text-center shadow-[0_24px_80px_rgba(62,51,31,0.055)] sm:mt-20 sm:min-h-64 sm:px-12 sm:py-16">
+      <div className={`relative mx-auto mt-16 grid min-h-60 w-full max-w-3xl place-items-center rounded-[2rem] border border-white/90 bg-white/55 px-5 py-10 text-center shadow-[0_24px_80px_rgba(62,51,31,0.055)] sm:mt-20 sm:min-h-64 sm:px-12 sm:py-16 ${className}`}>
         <p className="font-work text-sm text-stone-500">No synced lyrics are available for this song.</p>
       </div>
     )
@@ -15,10 +15,13 @@ function LyricsWindow({ lyrics, currentIndex }) {
   const hasCurrentLyric = currentIndex >= 0
 
   return (
-    <div className="relative mx-auto mt-16 w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/90 bg-white/55 px-5 py-10 shadow-[0_24px_80px_rgba(62,51,31,0.055)] sm:mt-20 sm:px-12 sm:py-16">
+    <div className={`relative mx-auto mt-16 w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/90 bg-white/55 px-5 py-10 shadow-[0_24px_80px_rgba(62,51,31,0.055)] sm:mt-20 sm:px-12 sm:py-16 ${className}`}>
       <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/80 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white/80 to-transparent" />
-      <div className="relative flex min-h-60 flex-col items-center justify-center gap-8 text-center sm:min-h-64 sm:gap-9">
+      <div
+        key={`${displayIndex}-${hasCurrentLyric}`}
+        className="lyric-window-slide relative flex min-h-60 flex-col items-center justify-center gap-8 text-center sm:min-h-64 sm:gap-9"
+      >
         <p className="min-h-[1.5em] max-w-2xl font-work text-lg leading-relaxed text-stone-300 sm:text-2xl">
           {previousLine}
         </p>
