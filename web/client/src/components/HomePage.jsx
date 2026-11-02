@@ -29,7 +29,7 @@ function HomePage({ onSearch, isLoading, error, onDismissError, onHome }) {
           <span className="italic text-stone-400">in its time.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-md font-work text-sm leading-7 text-stone-500 sm:text-base">
-          Find the song you love. Settle in, and let the lyrics find their rhythm.
+          Let that sync in
         </p>
         <SearchForm
           isLoading={isLoading}
